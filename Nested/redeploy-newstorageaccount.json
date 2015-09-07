@@ -16,7 +16,7 @@
     },
     "location": {
       "type": "String",
-      "defaultValue" : "West US",
+      "defaultValue" : "West Europe",
       "allowedValues": [
         "West US",
         "East US"
