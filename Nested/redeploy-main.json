@@ -64,8 +64,8 @@
           "EnvironmentType": {
             "value": "[parameters('EnvironmentType')]"
           },
-          "EnvironmentSuffix": {
-            "value": "[parameters('EnvironmentSuffix')]"
+          "FunctionType": {
+            "value": "[parameters('FunctionType')]"
           },
           "NumberSuffix": {
             "value": "[parameters('NumberSuffix')]"
