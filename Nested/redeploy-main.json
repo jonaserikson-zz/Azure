@@ -54,7 +54,7 @@
     }
   },
   "variables": {
-    "templatelink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"
+    "satemplatelink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"
   },
   "resources": [
     {
@@ -64,7 +64,7 @@
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "[variables('templatelink')]",
+          "uri": "[variables('satemplatelink')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
