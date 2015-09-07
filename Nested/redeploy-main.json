@@ -2,9 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "StorageAccountName": {
-      "type": "String"
-    },
     "EnvironmentPrefix": {
       "type": "String"
     },
@@ -13,13 +10,21 @@
       "defaultValue": "dev",
       "allowedValues": [
         "dev",
+        "stg",
         "tst",
         "lab",
         "prd"
       ]
     },
     "FunctionType": {
-      "type": "String"
+      "type": "String",
+      "defaultValue": "app",
+      "allowedValues": [
+        "app",
+        "db",
+        "web",
+        "srv"
+      ]
     },
     "NumberSuffix": {
       "type": "string",
@@ -38,6 +43,14 @@
         "11",
         "12"
       ]
+    },
+    "Location": {
+      "type": "String",
+      "defaultValue": "West Europe",
+      "allowedValues": [
+        "West Europe",
+        "North Europe"
+      ]
     }
   },
   "variables": {
@@ -55,9 +68,6 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "StorageAccountName": {
-            "value": "[parameters('StorageAccountName')]"
-          },
           "EnvironmentPrefix": {
             "value": "[parameters('EnvironmentPrefix')]"
           },
@@ -69,6 +79,9 @@
           },
           "NumberSuffix": {
             "value": "[parameters('NumberSuffix')]"
+          },
+          "Location": {
+            "value": "[parameters('Location')]"
           }
         }
       }

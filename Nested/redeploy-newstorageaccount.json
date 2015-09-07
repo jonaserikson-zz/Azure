@@ -2,9 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountName": {
-      "type": "String"
-    },
     "EnvironmentPrefix": {
       "type": "String"
     },
@@ -27,18 +24,16 @@
       ]
     },
     "location": {
-      "type": "String",
-      "defaultValue": "West Europe",
-      "allowedValues": [
-        "West Europe",
-        "East US"
-      ]
+      "type": "String"
     }
+  },
+  "variables": {
+    "storageAccountDef": "sa"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberSuffix'),parameters('StorageAccountName'))]",
+      "name": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberSuffix'),parameters('StorageAccountDef'))]",
       "apiVersion": "2014-12-01-preview",
       "location": "[parameters('location')]",
       "properties": {
