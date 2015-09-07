@@ -1,46 +1,11 @@
 {
-"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-"contentVersion": "1.0.0.0",
-
-"parameters": {
-  "windowsOSVersion": {
-    "type": "string"
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "variables": {
+    "imagePublisher": "MicrosoftWindowsServer",
+    "imageOffer": "WindowsServer"
   },
-  "newStorageAccountName": {
-    "type": "string"
-  },
-  "vmName": {
-    "type": "string"
-  },
-  "location": {
-    "type": "string"
-  },
-  "nicName": {
-    "type": "string"
-  },
-  "vmSize": {
-    "type": "string"
-  },
-  "vmStorageAccountContainerName": {
-    "type": "string"
-  },
-  "OSDiskName": {
-    "type": "string"
-  },
-  "adminUsername": {
-    "type": "string"
-  },
-  "adminPassword": {
-   "type": "string"
-  }
-},
-
-"variables": {
-  "imagePublisher": "MicrosoftWindowsServer",
-  "imageOffer": "WindowsServer"
-},
-
-"resources": [
+  "resources": [
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
@@ -84,8 +49,8 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-             "enabled": "true",
-             "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
+            "enabled": "true",
+            "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
         }
       }

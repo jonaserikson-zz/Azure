@@ -39,7 +39,7 @@
     }
   },
   "variables": {
-    "location": "West US",
+    "location": "West Europe",
     "OSDiskName": "osdiskforwindowssimple",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
@@ -64,6 +64,50 @@
       "location": "[variables('location')]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "nestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[variables('templatelink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "windowsOSVersion": {
+            "value": "[parameters('windowsOSVersion')]"
+          },
+          "newStorageAccountName": {
+            "value": "[parameters('newStorageAccountName')]"
+          },
+          "vmName": {
+            "value": "[variables('vmName')]"
+          },
+          "location": {
+            "value": "[variables('location')]"
+          },
+          "nicName": {
+            "value": "[variables('nicName')]"
+          },
+          "vmSize": {
+            "value": "[variables('vmSize')]"
+          },
+          "vmStorageAccountContainerName": {
+            "value": "[variables('vmStorageAccountContainerName')]"
+          },
+          "OSDiskName": {
+            "value": "[variables('OSDiskName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          }
+        }
       }
     },
     {
@@ -123,50 +167,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
-      "name": "nestedTemplate",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "incremental",
-        "templateLink": {
-          "uri": "[variables('templatelink')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "windowsOSVersion": {
-            "value": "[parameters('windowsOSVersion')]"
-          },
-          "newStorageAccountName": {
-            "value": "[parameters('newStorageAccountName')]"
-          },
-          "vmName": {
-            "value": "[variables('vmName')]"
-          },
-          "location": {
-            "value": "[variables('location')]"
-          },
-          "nicName": {
-            "value": "[variables('nicName')]"
-          },
-          "vmSize": {
-            "value": "[variables('vmSize')]"
-          },
-          "vmStorageAccountContainerName": {
-            "value": "[variables('vmStorageAccountContainerName')]"
-          },
-          "OSDiskName": {
-            "value": "[variables('OSDiskName')]"
-          },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          }
-        }
       }
     }
   ]
