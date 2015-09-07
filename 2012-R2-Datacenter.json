@@ -2,6 +2,39 @@
 "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 "contentVersion": "1.0.0.0",
 
+"parameters": {
+  "windowsOSVersion": {
+    "type": "string"
+  },
+  "newStorageAccountName": {
+    "type": "string"
+  },
+  "vmName": {
+    "type": "string"
+  },
+  "location": {
+    "type": "string"
+  },
+  "nicName": {
+    "type": "string"
+  },
+  "vmSize": {
+    "type": "string"
+  },
+  "vmStorageAccountContainerName": {
+    "type": "string"
+  },
+  "OSDiskName": {
+    "type": "string"
+  },
+  "adminUsername": {
+    "type": "string"
+  },
+  "adminPassword": {
+   "type": "string"
+  }
+},
+
 "variables": {
   "imagePublisher": "MicrosoftWindowsServer",
   "imageOffer": "WindowsServer"
@@ -11,18 +44,18 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('vmName')]",
-      "location": "[variables('location')]",
+      "name": "[parameters('vmName')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[variables('vmName')]",
+          "computername": "[parameters('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -36,7 +69,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',parameters('vmStorageAccountContainerName'),'/',parameters('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -45,7 +78,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicName'))]"
             }
           ]
         },

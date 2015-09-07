@@ -142,14 +142,6 @@
           "newStorageAccountName": {
             "value": "[parameters('newStorageAccountName')]"
           },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          }
-        },
-        "variables": {
           "vmName": {
             "value": "[variables('vmName')]"
           },
@@ -167,6 +159,12 @@
           },
           "OSDiskName": {
             "value": "[variables('OSDiskName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
           }
         }
       }
