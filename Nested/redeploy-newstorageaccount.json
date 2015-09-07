@@ -40,7 +40,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('StorageAccountName')]",
       "apiVersion": "2014-12-01-preview",
-      "location": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberPrefix'),parameters('StorageAccountName'))]",
+      "location": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberSuffix'),parameters('StorageAccountName'))]",
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
       }
