@@ -28,9 +28,9 @@
     },
     "location": {
       "type": "String",
-      "defaultValue": "West EU",
+      "defaultValue": "West Europe",
       "allowedValues": [
-        "West EU",
+        "West Europe",
         "East US"
       ]
     }
@@ -38,9 +38,9 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('StorageAccountName')]",
+      "name": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberSuffix'),parameters('StorageAccountName'))]",
       "apiVersion": "2014-12-01-preview",
-      "location": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberSuffix'),parameters('StorageAccountName'))]",
+      "location": "[parameters('location')]",
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
       }
