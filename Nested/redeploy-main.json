@@ -1,24 +1,77 @@
 {
-      "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-      "contentVersion": "1.0.0.0",
-      "parameters": {
-    	"StorageAccountName": {
-      	"type": "String"
-    	}
-      },
-      "variables": {"templatelink":"https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"},
-      "resources": [
-        {
-          "apiVersion": "2015-01-01",
-          "name": "nestedTemplate",
-          "type": "Microsoft.Resources/deployments",
-          "properties": {
-            "mode": "incremental",
-            "templateLink": {"uri":"[variables('templatelink')]","contentVersion":"1.0.0.0"},
-	    "parameters": {
-		"StorageAccountName":{"value":"[parameters('StorageAccountName')]"}
-	    }
-          }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "StorageAccountName": {
+      "type": "String"
+    },
+    "EnvironmentPrefix": {
+      "type": "String"
+    },
+    "EnvironmentType": {
+      "type": "string",
+      "defaultValue": "dev",
+      "allowedValues": [
+        "dev",
+        "tst",
+        "lab",
+        "prd"
+      ]
+    },
+    "FunctionType": {
+      "type": "String"
+    },
+    "NumberSuffix": {
+      "type": "string",
+      "defaultValue": "01",
+      "allowedValues": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12"
       ]
     }
+  },
+  "variables": {
+    "templatelink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-01-01",
+      "name": "nestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[variables('templatelink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "StorageAccountName": {
+            "value": "[parameters('StorageAccountName')]"
+          },
+          "EnvironmentPrefix": {
+            "value": "[parameters('EnvironmentPrefix')]"
+          },
+          "EnvironmentType": {
+            "value": "[parameters('EnvironmentType')]"
+          },
+          "EnvironmentSuffix": {
+            "value": "[parameters('EnvironmentSuffix')]"
+          },
+          "NumberSuffix": {
+            "value": "[parameters('NumberSuffix')]"
+          }
+        }
+      }
+    }
+  ]
+}

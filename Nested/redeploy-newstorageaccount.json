@@ -5,18 +5,30 @@
     "storageAccountName": {
       "type": "String"
     },
+    "EnvironmentPrefix": {
+      "type": "String"
+    },
+    "EnvironmentType": {
+      "type": "string"
+    },
+    "FunctionType": {
+      "type": "String"
+    },
+    "NumberSuffix": {
+      "type": "string"
+    },
     "storageAccountType": {
       "type": "string",
       "defaultValue": "Standard_LRS",
       "allowedValues": [
         "Standard_LRS",
         "Standard_GRS",
-        "Standard_ZRS"        
+        "Standard_ZRS"
       ]
     },
     "location": {
       "type": "String",
-      "defaultValue" : "West Europe",
+      "defaultValue": "West Europe",
       "allowedValues": [
         "West Europe",
         "East US"
@@ -28,11 +40,10 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('StorageAccountName')]",
       "apiVersion": "2014-12-01-preview",
-      "location": "[parameters('location')]",
+      "location": "[concat(parameters('EnvironmentPrefix'),parameters('EnvironmentType'),parameters('FunctionType'),parameters('NumberPrefix'),parameters('StorageAccountName'))]",
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
       }
     }
   ]
-	
 }
