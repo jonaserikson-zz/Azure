@@ -6,7 +6,7 @@
       	"type": "String"
     	}
       },
-      "variables": {"templatelink":"https://raw.githubusercontent.com/rjmax/ArmExamples/master/newStorageAccount.json"},
+      "variables": {"templatelink":"https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"},
       "resources": [
         {
           "apiVersion": "2015-01-01",
