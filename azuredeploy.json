@@ -162,7 +162,7 @@
           "vmSize": {
             "value": "[variables('vmSize')]"
           },
-          "vmStorageAccountContainerName\n": {
+          "vmStorageAccountContainerName": {
             "value": "[variables('vmStorageAccountContainerName')]"
           },
           "OSDiskName": {
