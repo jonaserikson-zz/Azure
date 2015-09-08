@@ -23,7 +23,7 @@
         "Standard_ZRS"
       ]
     },
-    "location": {
+    "Location": {
       "type": "String"
     }
   },
