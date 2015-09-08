@@ -94,9 +94,12 @@
   },
   "variables": {
     "TemplateBaseLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/nested2/",
-    "StorageAccountFile": "redeploy-newstorageaccount.json",
-    "NSGFile": "[concat('redeploy-new',parameters('FunctionType'),'nsg.json')]",
-    "VMFile": "[concat(parameters('windowsOSVersion'),'.json')]"
+    "TemplateBaseFileName": "redeploy-new",
+    "StorageAccountFile": "[concat(variables('TemplateBaseLink'),variables('TemplateBaseFileName'),variables('StorageAccountDef'),'.json')]",
+    "NetworkSecurityGroupFile": "[concat(variables('TemplateBaseLink'),variables('TemplateBaseFileName'),variables('NetworkSecurityGroupDef'),'.json')]",
+    "VirtualMachineFile": "[concat(parameters('windowsOSVersion'),'.json')]",
+    "StorageAccountDef": "sa",
+    "NetworkSecurityGroupDef": "nsg"
   },
   "resources": [
     {
@@ -106,7 +109,7 @@
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "[concat(variables('TemplateBaseLink'),variables('StorageAccountFile'))]",
+          "uri": "[variables('StorageAccountFile')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -130,12 +133,12 @@
     },
     {
       "apiVersion": "2015-01-01",
-      "name": "newnsg",
+      "name": "newnetworksecuritygroup",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "[concat(variables('TemplateBaseLink'),variables('NSGFile'))]",
+          "uri": "[variables('NetworkSecurityGroupFile')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
