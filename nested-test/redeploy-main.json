@@ -81,7 +81,8 @@
     }
   },
   "variables": {
-    "SatemplateLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/nested-test/redeploy-newstorageaccount.json"
+    "TemplateBaseLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/",
+    "SatemplateLink": "[concat(variables('TemplateBaseLink'), 'nested-test/redeploy-newstorageaccount.json')]"
   },
   "resources": [
     {
@@ -91,36 +92,7 @@
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "[variables('SatemplateLink')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "EnvironmentPrefix": {
-            "value": "[parameters('EnvironmentPrefix')]"
-          },
-          "EnvironmentType": {
-            "value": "[parameters('EnvironmentType')]"
-          },
-          "FunctionType": {
-            "value": "[parameters('FunctionType')]"
-          },
-          "NumberSuffix": {
-            "value": "[parameters('NumberSuffix')]"
-          },
-          "Location": {
-            "value": "[parameters('Location')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
-      "name": "newstorageaccountTemplate",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "incremental",
-        "templateLink": {
-          "uri": "[variables('SatemplateLink')]",
+          "uri": "[concat(variables('templateBaseUrl'), concat(variables('TemplateBaseLink'),]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
