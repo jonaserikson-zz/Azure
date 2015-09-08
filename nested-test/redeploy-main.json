@@ -97,7 +97,6 @@
     "StorageAccountFile": "redeploy-newstorageaccount.json",
     "NSGFile": "[concat('redeploy-new',parameters('FunctionType'),'nsg.json')]",
     "VMFile": "[concat(parameters('windowsOSVersion'),'.json')]"
-    
   },
   "resources": [
     {
@@ -137,35 +136,6 @@
         "mode": "incremental",
         "templateLink": {
           "uri": "[concat(variables('TemplateBaseLink'),variables('NSGFile'))]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "EnvironmentPrefix": {
-            "value": "[parameters('EnvironmentPrefix')]"
-          },
-          "EnvironmentType": {
-            "value": "[parameters('EnvironmentType')]"
-          },
-          "FunctionType": {
-            "value": "[parameters('FunctionType')]"
-          },
-          "NumberSuffix": {
-            "value": "[parameters('NumberSuffix')]"
-          },
-          "Location": {
-            "value": "[parameters('Location')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
-      "name": "newvm",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "incremental",
-        "templateLink": {
-          "uri": "[concat(variables('TemplateBaseLink'),variables('VMFile'))]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
