@@ -81,7 +81,8 @@
     }
   },
   "variables": {
-    "SatemplateLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json"
+    "SatemplateLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newstorageaccount.json",
+    "VMtemplateLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/Nested/redeploy-newVM.json"
   },
   "resources": [
     {
@@ -115,12 +116,12 @@
     },
     {
       "apiVersion": "2015-01-01",
-      "name": "newstorageaccountTemplate",
+      "name": "newVMTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "[variables('SatemplateLink')]",
+          "uri": "[variables('VMtemplateLink')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
