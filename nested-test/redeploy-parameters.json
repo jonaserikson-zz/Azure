@@ -2,20 +2,20 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-          "EnvironmentPrefix": {
-            "value": "[parameters('EnvironmentPrefix')]"
-          },
-          "EnvironmentType": {
-            "value": "[parameters('EnvironmentType')]"
-          },
-          "FunctionType": {
-            "value": "[parameters('FunctionType')]"
-          },
-          "NumberSuffix": {
-            "value": "[parameters('NumberSuffix')]"
-          },
-          "Location": {
-            "value": "[parameters('Location')]"
-          }
+    "EnvironmentPrefix": {
+      "value": "[parameters('EnvironmentPrefix')]"
+    },
+    "EnvironmentType": {
+      "value": "[parameters('EnvironmentType')]"
+    },
+    "FunctionType": {
+      "value": "[parameters('FunctionType')]"
+    },
+    "NumberSuffix": {
+      "value": "[parameters('NumberSuffix')]"
+    },
+    "Location": {
+      "value": "West Europe"
+    }
   }
 }
