@@ -11,14 +11,10 @@
     "FunctionType": {
       "type": "String"
     },
-    "NumberSuffix": {
-      "type": "string"
-    },
     "Location": {
       "type": "String"
     }
   },
-  "variables": {},
   "resources": [
     {
       "apiVersion": "2015-05-01-preview",
