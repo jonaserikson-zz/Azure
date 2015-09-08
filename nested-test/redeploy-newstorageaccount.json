@@ -2,16 +2,16 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "EnvironmentPrefix": {
+    "subEnvironmentPrefix": {
       "type": "String"
     },
-    "EnvironmentType": {
+    "subEnvironmentType": {
       "type": "string"
     },
-    "FunctionType": {
+    "subFunctionType": {
       "type": "String"
     },
-    "NumberSuffix": {
+    "subNumberSuffix": {
       "type": "string"
     },
     "storageAccountType": {
@@ -23,7 +23,7 @@
         "Standard_ZRS"
       ]
     },
-    "Location": {
+    "subLocation": {
       "type": "String"
     }
   },
