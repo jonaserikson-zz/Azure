@@ -148,9 +148,6 @@
           "FunctionType": {
             "value": "[parameters('FunctionType')]"
           },
-          "NumberSuffix": {
-            "value": "[parameters('NumberSuffix')]"
-          },
           "Location": {
             "value": "[parameters('Location')]"
           }
