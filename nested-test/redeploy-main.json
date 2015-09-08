@@ -1,0 +1,146 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "EnvironmentPrefix": {
+      "type": "String",
+      "metadata": {
+        "description": "Prefix for the resources, Ex three letter customer name"
+      }
+    },
+    "EnvironmentType": {
+      "type": "string",
+      "defaultValue": "dev",
+      "allowedValues": [
+        "dev",
+        "stg",
+        "tst",
+        "lab",
+        "prd"
+      ],
+      "metadata": {
+        "description": "Type of environment"
+      }
+    },
+    "FunctionType": {
+      "type": "String",
+      "defaultValue": "app",
+      "allowedValues": [
+        "app",
+        "db",
+        "web",
+        "srv"
+      ],
+      "metadata": {
+        "description": "Type of function / application"
+      }
+    },
+    "NumberSuffix": {
+      "type": "string",
+      "defaultValue": "01",
+      "allowedValues": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12"
+      ],
+      "metadata": {
+        "description": "Sequence number for the resource"
+      }
+    },
+    "Location": {
+      "type": "String",
+      "defaultValue": "West Europe",
+      "allowedValues": [
+        "West Europe",
+        "North Europe"
+      ],
+      "metadata": {
+        "description": "Allowed locations is West Europe and North Europe"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Local root or administrator username"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine. Must be at least 8 characters and one have at least one capital letter, one number and one special character"
+      }
+    }
+  },
+  "variables": {
+    "SatemplateLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/nested-test/redeploy-newstorageaccount.json"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-01-01",
+      "name": "newstorageaccountTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[variables('SatemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "EnvironmentPrefix": {
+            "value": "[parameters('EnvironmentPrefix')]"
+          },
+          "EnvironmentType": {
+            "value": "[parameters('EnvironmentType')]"
+          },
+          "FunctionType": {
+            "value": "[parameters('FunctionType')]"
+          },
+          "NumberSuffix": {
+            "value": "[parameters('NumberSuffix')]"
+          },
+          "Location": {
+            "value": "[parameters('Location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "newstorageaccountTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[variables('SatemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "EnvironmentPrefix": {
+            "value": "[parameters('EnvironmentPrefix')]"
+          },
+          "EnvironmentType": {
+            "value": "[parameters('EnvironmentType')]"
+          },
+          "FunctionType": {
+            "value": "[parameters('FunctionType')]"
+          },
+          "NumberSuffix": {
+            "value": "[parameters('NumberSuffix')]"
+          },
+          "Location": {
+            "value": "[parameters('Location')]"
+          }
+        }
+      }
+    }
+  ]
+}
