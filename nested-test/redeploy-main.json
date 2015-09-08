@@ -78,11 +78,26 @@
       "metadata": {
         "description": "Password for the Virtual Machine. Must be at least 8 characters and one have at least one capital letter, one number and one special character"
       }
+    },
+    "windowsOSVersion": {
+      "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
+      "allowedValues": [
+        "2008-R2-SP1",
+        "2012-Datacenter",
+        "2012-R2-Datacenter"
+      ],
+      "metadata": {
+        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
+      }
     }
   },
   "variables": {
-    "TemplateBaseLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/",
-    "StorageAccountFile": "nested-test/redeploy-newstorageaccount.json"
+    "TemplateBaseLink": "https://raw.githubusercontent.com/jonaserikson/azure/master/nested-test/",
+    "StorageAccountFile": "redeploy-newstorageaccount.json",
+    "NSGFile": "[concat('redeploy-new',parameters('FunctionType'),'nsg.json')]",
+    "VMFile": "[concat(parameters('windowsOSVersion'),'.json')]"
+    
   },
   "resources": [
     {
@@ -93,6 +108,64 @@
         "mode": "incremental",
         "templateLink": {
           "uri": "[concat(variables('TemplateBaseLink'),variables('StorageAccountFile'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "EnvironmentPrefix": {
+            "value": "[parameters('EnvironmentPrefix')]"
+          },
+          "EnvironmentType": {
+            "value": "[parameters('EnvironmentType')]"
+          },
+          "FunctionType": {
+            "value": "[parameters('FunctionType')]"
+          },
+          "NumberSuffix": {
+            "value": "[parameters('NumberSuffix')]"
+          },
+          "Location": {
+            "value": "[parameters('Location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "newnsg",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[concat(variables('TemplateBaseLink'),variables('NSGFile'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "EnvironmentPrefix": {
+            "value": "[parameters('EnvironmentPrefix')]"
+          },
+          "EnvironmentType": {
+            "value": "[parameters('EnvironmentType')]"
+          },
+          "FunctionType": {
+            "value": "[parameters('FunctionType')]"
+          },
+          "NumberSuffix": {
+            "value": "[parameters('NumberSuffix')]"
+          },
+          "Location": {
+            "value": "[parameters('Location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "newvm",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[concat(variables('TemplateBaseLink'),variables('VMFile'))]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
