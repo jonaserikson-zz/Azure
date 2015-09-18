@@ -71,11 +71,11 @@
     },
     "Image": {
       "type": "string",
-      "defaultValue": "Ubuntu-14.04.3-LTS",
+      "defaultValue": "ubuntu-14.04.3-LTS",
       "allowedValues": [
-        "Ubuntu-12.04.5 LTS",
-        "Ubuntu-14.04.3-LTS",
-        "Ubuntu-15.04"
+        "ubuntu-12.04.5 LTS",
+        "ubuntu-14.04.3-LTS",
+        "ubuntu-15.04"
       ],
       "metadata": {
         "description": "The Linux version for the VM. This will pick a fully patched image of this given Linux version."
