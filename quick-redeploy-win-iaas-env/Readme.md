@@ -1,5 +1,5 @@
-[![deploybutton.png](https://bitbucket.org/repo/Xderan/images/2803742790-deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com/jonaserikson/azure/master/quick-deploy-win-iaas-env/redeploy-main.json)    
-# quick-deploy-win-iaas-env
+[![deploybutton.png](https://bitbucket.org/repo/Xderan/images/2803742790-deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-win-iaas-env/redeploy-main.json)    
+# quick-redeploy-win-iaas-env
 
 #### What is this repository for? ###
 
@@ -9,7 +9,7 @@
 
 ### How do I get set up? ###
 
-* Press the deploy to Azure button above 
+* Press the deploy to Azure button above
 * Fill in the input properly
 * Redo for more servers
 
