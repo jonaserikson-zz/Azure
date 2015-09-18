@@ -1,4 +1,4 @@
-[![deploybutton.png](https://bitbucket.org/repo/Xderan/images/2803742790-deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-win-iaas-env/redeploy-main.json)    
+[![deploybutton.png](https://bitbucket.org/repo/Xderan/images/2803742790-deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-win-iaas-env/redeploy-main.json)    
 # quick-redeploy-win-iaas-env
 
 #### What is this repository for? ###
