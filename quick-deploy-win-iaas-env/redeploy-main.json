@@ -99,7 +99,7 @@
   },
   "variables": {
     "Location": "[resourceGroup().location]",
-    "TemplateBase": "https://raw.githubusercontent.com/lavett/azure/master/nested/",
+    "TemplateBase": "https://github.com/jonaserikson/azure/blob/master/quick-deploy-win-iaas-env/",
     "TemplateBaseFile": "redeploy-new",
     "BaseSrvName": "[concat(parameters('Customer'),parameters('Environment'),parameters('Function'),parameters('Number'))]",
     "BaseName": "[concat(parameters('Customer'),parameters('Environment'))]",
