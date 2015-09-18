@@ -1,4 +1,4 @@
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2raw.githubusercontent.com%2jonaserikson%2azure%2master%2quick-redeploy-win-iaas-env%2redeploy-main.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2raw.githubusercontent.com%2Fjonaserikson%2Fazure%2Fmaster%2Fquick-redeploy-win-iaas-env%2Fredeploy-main.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
