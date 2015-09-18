@@ -1,0 +1,220 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "BaseName": {
+      "type": "String"
+    },
+    "BaseSrvName": {
+      "type": "string"
+    },
+    "BaseFuncName": {
+      "type": "String"
+    },
+    "NSGDef": {
+      "type": "string"
+    },
+    "NETDef": {
+      "type": "string"
+    },
+    "NICDef": {
+      "type": "string"
+    },
+    "PIPDef": {
+      "type": "string"
+    },
+    "SUBDef": {
+      "type": "string"
+    },
+    "PIPType": {
+      "type": "string"
+    },
+    "NETAddress": {
+      "type": "string"
+    },
+    "WEBSubnet": {
+      "type": "string"
+    },
+    "APPSubnet": {
+      "type": "string"
+    },
+    "DBSubnet": {
+      "type": "string"
+    },
+    "SRVSubnet": {
+      "type": "string"
+    },
+    "Location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "NETid": "[concat(parameters('BaseName'),parameters('NETDef'))]",
+    "NSGid": "[concat(parameters('BaseFuncName'),parameters('NSGDef'))]",
+    "PIPid": "[concat(parameters('BaseSrvName'),parameters('PIPDef'))]",
+    "VNETid": "[resourceId('Microsoft.Network/virtualNetworks',variables('NETid'))]",
+    "SUBRef": "[concat(variables('VNETid'),'/subnets/',variables('SUBid'))]",
+    "SUBid": "[concat(parameters('BaseFuncName'),parameters('SUBDef'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('NSGid')]",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "RDP",
+            "properties": {
+              "description": "Port 3389",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HTTP",
+            "properties": {
+              "description": "Port 80",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HTTPS",
+            "properties": {
+              "description": "Port 443",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Port_8081",
+            "properties": {
+              "description": "Port 8081",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8081",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Port_3030",
+            "properties": {
+              "description": "Port 3030",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3030",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 104,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Port_30000",
+            "properties": {
+              "description": "Port 30000",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "30000",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('BaseSrvName'),parameters('PIPDef'))]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('PIPType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('BaseSrvName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[concat(parameters('BaseName'),parameters('NETDef'))]",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('NSGid'))]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('NETaddress')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[concat(parameters('BaseFuncName'),parameters('SUBDef'))]",
+            "properties": {
+              "addressPrefix": "[parameters('APPSubnet')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGid'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('BaseSrvName'),parameters('NICDef'))]",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('PIPid'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('NETid'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('PIPid'))]"
+              },
+              "subnet": {
+                "id": "[variables('SUBRef')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

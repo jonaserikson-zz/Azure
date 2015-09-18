@@ -1,0 +1,76 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "BaseSrvName": {
+      "type": "string"
+    },
+    "NICDef": {
+      "type": "string"
+    },
+    "SADef": {
+      "type": "string"
+    },
+    "Size": {
+      "type": "string"
+    },
+    "Username": {
+      "type": "string"
+    },
+    "Password": {
+      "type": "string"
+    },
+    "Location": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "NICid": "[concat(parameters('BaseSrvName'),parameters('NICDef'))]",
+    "SAid": "[concat(parameters('BaseSrvName'),parameters('SADef'))]",
+    "imagePublisher": "MicrosoftWindowsServer",
+    "imageOffer": "WindowsServer",
+    "windowsOSVersion": "2008-R2-SP1",
+    "OSDiskName": "osdisk1"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('BaseSrvName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('Size')]"
+        },
+        "osProfile": {
+          "computername": "[parameters('BaseSrvName')]",
+          "adminUsername": "[parameters('Username')]",
+          "adminPassword": "[parameters('Password')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[variables('windowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',variables('SAid'),'.blob.core.windows.net/','vhds','/',variables('OSDiskName'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('NICid'))]"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
