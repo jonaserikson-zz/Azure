@@ -2,6 +2,8 @@
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
+# quick-redeploy-win-iaas-env
+
 #### What is this repository for? ###
 
 * This is a Azure template based on json to be used in Azure portal or through the resource manager using powershell or cli
