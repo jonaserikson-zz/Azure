@@ -71,17 +71,14 @@
     },
     "Image": {
       "type": "string",
-      "defaultValue": "Win2012",
+      "defaultValue": "Ubuntu-14.04.3-LTS",
       "allowedValues": [
-        "Win2008",
-        "Win2012",
-        "Win2016-Preview",
-        "Win2012-SQL2012",
-        "Win2012-SQL2014",
-        "Win2012-SQL2016-Preview"
+        "Ubuntu-12.04.5 LTS",
+        "Ubuntu-14.04.3-LTS",
+        "Ubuntu-15.04"
       ],
       "metadata": {
-        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
+        "description": "The Linux version for the VM. This will pick a fully patched image of this given Linux version."
       }
     },
     "Size": {
@@ -106,7 +103,7 @@
     "BaseFuncName": "[concat(parameters('Customer'),parameters('Environment'),parameters('Function'))]",
     "SAFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('SADef'),'.json')]",
     "NETFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('NETDef'),parameters('Function'),'.json')]",
-    "VMFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('VMDef'),parameters('Image'),'.json')]",
+    "VMFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('VMDef'),'-',parameters('Image'),'.json')]",
     "NETAddress": "10.10.0.0/16",
     "WEBSubnet": "10.10.1.0/24",
     "APPSubnet": "10.10.2.0/24",

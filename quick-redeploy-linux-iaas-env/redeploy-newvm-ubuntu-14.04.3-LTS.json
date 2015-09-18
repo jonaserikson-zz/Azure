@@ -27,9 +27,9 @@
   "variables": {
     "NICid": "[concat(parameters('BaseSrvName'),parameters('NICDef'))]",
     "SAid": "[concat(parameters('BaseSrvName'),parameters('SADef'))]",
-    "imagePublisher": "MicrosoftWindowsServer",
-    "imageOffer": "WindowsServer",
-    "windowsOSVersion": "2008-R2-SP1",
+    "imagePublisher": "Canonical",
+    "imageOffer": "UbuntuServer",
+    "ubuntuOSVersion": "Ubuntu-14.04.3-LTS",
     "OSDiskName": "osdisk1"
   },
   "resources": [
@@ -51,7 +51,7 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[variables('windowsOSVersion')]",
+            "sku": "[variables('ubuntuOSVersion')]",
             "version": "latest"
           },
           "osDisk": {
