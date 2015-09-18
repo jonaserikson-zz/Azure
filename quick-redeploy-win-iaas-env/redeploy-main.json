@@ -99,7 +99,7 @@
   },
   "variables": {
     "Location": "[resourceGroup().location]",
-    "TemplateBase": "https://github.com/jonaserikson/azure/blob/master/quick-deploy-win-iaas-env/",
+    "TemplateBase": "https://raw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-linux-iaas-env/",
     "TemplateBaseFile": "redeploy-new",
     "BaseSrvName": "[concat(parameters('Customer'),parameters('Environment'),parameters('Function'),parameters('Number'))]",
     "BaseName": "[concat(parameters('Customer'),parameters('Environment'))]",
