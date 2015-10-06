@@ -103,7 +103,7 @@
     "BaseFuncName": "[concat(parameters('Customer'),parameters('Environment'),parameters('Function'))]",
     "SAFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('SADef'),'.json')]",
     "NETFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('NETDef'),parameters('Function'),'.json')]",
-    "VMFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('VMDef'),parameters('Image'),'.json')]",
+    "VMFile": "[concat(variables('TemplateBase'),variables('TemplateBaseFile'),variables('VMDef'),'-',parameters('Image'),'.json')]",
     "NETAddress": "10.10.0.0/16",
     "WEBSubnet": "10.10.1.0/24",
     "APPSubnet": "10.10.2.0/24",
