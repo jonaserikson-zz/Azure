@@ -5,4 +5,4 @@
 </a>
 
 Optimized variables and input from quickstart template.
-Hit deploy button, execute via powershell or just paste the code to Azure portal
+Hit REDEPLOY TO AZURE button, execute via powershell or just paste the code to Azure portal
