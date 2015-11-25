@@ -5,7 +5,5 @@
 </a>
 
 Deploys a Site-To-Site VPN infrastructure to the same location as choosen resourceGroup.
-
 Optimized variables and input from quickstart template.
-
 Hit REDEPLOY TO AZURE button, execute via powershell or just paste the code to Azure portal.
