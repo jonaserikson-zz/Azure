@@ -15,14 +15,14 @@
         },
         "localGatewayName": {
             "type": "string",
-            "defaultValue": "VPNGateway",
+            "defaultValue": "onpremVPNGateway01",
             "metadata": {
                 "description": "Aribtary name for gateway resource representing "
             }
         },
         "localGatewayIpAddress": {
             "type": "string",
-            "defaultValue": "1.1.1.1",
+            "defaultValue": "X.X.X.X",
             "metadata": {
                 "description": "Public IP of your local GW"
             }
@@ -78,7 +78,7 @@
         },
         "gatewayName": {
             "type": "string",
-            "defaultValue": "VPNGateway",
+            "defaultValue": "VPNGateway01",
             "metadata": {
                 "description": "Arbitrary name for the new gateway"
             }
