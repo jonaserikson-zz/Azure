@@ -82,7 +82,8 @@
     "NICDef": "nic",
     "PIPDef": "pip",
     "NSGDef": "nsg",
-    "OSDISKDef": "osdisk"
+    "OSDISKDef": "osdisk",
+    "NSGDef": "nsg"
   },
   "resources": [
     {
