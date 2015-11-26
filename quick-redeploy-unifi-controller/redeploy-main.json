@@ -57,6 +57,7 @@
     "metadata": {
       "description": "Installs selected application"
     }
+    }
   },
   "variables": {
     "TemplateBase": "https://raw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-unifi-controller/",
@@ -214,5 +215,4 @@
       }
     }
   ]
-}
 }
