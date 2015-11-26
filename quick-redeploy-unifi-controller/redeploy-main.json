@@ -50,20 +50,20 @@
   },
   "Application": {
     "type": "string",
-    "defaultValue": "Unifi_Controller",
+    "defaultValue": "echo",
     "allowedValues": [
-      "Unifi_Controller"
+      "echo"
     ],
     "metadata": {
       "description": "Installs selected application"
-    }
+      }
     }
   },
   "variables": {
     "TemplateBase": "https://raw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-unifi-controller/",
-    "ScriptFile": "[parameters(Application)]",
+    "ScriptFile": "[parameters('Application')]",
     "ScriptType": ".sh",
-    "apiVersion": "2015-05-01",
+    "apiVersion": "2015-05-01-preview",
     "Location": "[resourceGroup().location]",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
@@ -75,6 +75,8 @@
     "vmStorageAccountContainerName": "vhds",
     "virtualNetworkName": "Vnet01",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+    "PIPid": "[concat(parameters('ServerName'),variables('PIPdef'))]",
+    "Nicid": "[concat(parameters('ServerName'),variables('NICdef'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "SADef": "sa",
     "NICDef": "nic",
@@ -95,7 +97,7 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(parameters('ServerName'),variables(PIPdef')]",
+      "name": "[concat(parameters('ServerName'),variables('PIPdef'))]",
       "location": "[variables('location')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
@@ -131,8 +133,8 @@
       "name": "[concat(parameters('ServerName'),variables('NICDef'))]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('ServerName'),variables(PIPdef')]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/',parameters('ServerName'),variables('PIPdef'))]",
+        "[concat('Microsoft.Network/virtualNetworks/',variables('virtualNetworkName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -141,7 +143,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ServerName'),variables('PIPdef'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('PIPid'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef')]"
@@ -154,10 +156,10 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('ServerName)]",
+      "name": "[parameters('ServerName')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('ServerName'),variables('SAdef'))]",
         "[concat('Microsoft.Network/networkInterfaces/', parameters('ServerName'),variables('NICDef'))]"
       ],
       "properties": {
@@ -165,7 +167,7 @@
           "vmSize": "[parameters('Size')]"
         },
         "osProfile": {
-          "computerName": "[parameters('ServerName)]",
+          "computerName": "[parameters('ServerName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -179,7 +181,7 @@
           "osDisk": {
             "name": "[concat(parameters('ServerName'),variables('OSDISKdef'))]",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('ServerName'),variables('OSDISKdef'),'.vhd')]"
+              "uri": "[concat('http://',parameters('ServerName'),variables('SAdef'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('ServerName'),variables('OSDISKdef'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -188,7 +190,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('ServerName'),variables('PIPDef'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('NICid'))]"
             }
           ]
         }
@@ -208,9 +210,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[concat(variables('TemplateBase'),variables(ScriptFile),variables(ScriptType))]"
+            "[concat(variables('TemplateBase'),variables('ScriptFile'),variables('ScriptType'))]"
           ],
-          "commandToExecute": "[concat(sh ,variables(ScriptFile),variables(ScriptType))]"
+          "commandToExecute": "[concat('sh ',variables('ScriptFile'),variables('ScriptType'))]"
         }
       }
     }
