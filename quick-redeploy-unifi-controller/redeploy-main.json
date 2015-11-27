@@ -62,7 +62,7 @@
       "type": "string",
       "defaultValue": "x.x.x.x",
       "metadata": {
-        "description": "The External IP of the devies going to be managed"
+        "description": "The External IP of the devices going to be managed"
         }
       }
   },
@@ -75,13 +75,13 @@
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "addressPrefix": "10.10.0.0/8",
-    "subnetName": "Subnet01",
+    "subnetName": "subnet01",
     "subnetPrefix": "10.10.0.0/24",
     "staticPrivateIP": "10.10.0.4",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "virtualNetworkName": "Vnet01",
+    "virtualNetworkName": "vnet01",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "PIPid": "[concat(parameters('ServerName'),variables('PIPdef'))]",
     "Nicid": "[concat(parameters('ServerName'),variables('NICdef'))]",
