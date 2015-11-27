@@ -9,13 +9,3 @@ It also creates and deploy a full Azure infra configuration for the VM.
 Configures all ports needed for Unifi traffic.
 
 One click install.
-
-
-*storageAccount
-*Network Security Group
-*Virtual Network
-*Subnet
-*Nic
-*publicIPAddress
-*VM
-*Install script for software
