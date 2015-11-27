@@ -137,6 +137,62 @@
               "priority": 101,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "8080",
+            "properties": {
+              "description": "Port 8080",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "8088",
+            "properties": {
+              "description": "Port 8088",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8088",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "access": "Allow",
+              "priority": 103,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "8843",
+            "properties": {
+              "description": "Port 8843",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8843",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "access": "Allow",
+              "priority": 104,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "3478",
+            "properties": {
+              "description": "Port 3478",
+              "protocol": "Udp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3478",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Inbound"
+            }
           }
         ]
       }
