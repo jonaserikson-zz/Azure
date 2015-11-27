@@ -57,7 +57,14 @@
     "metadata": {
       "description": "Installs selected application"
       }
-    }
+    },
+    "ExternalIPofDevices": {
+      "type": "string",
+      "defaultValue": "x.x.x.x",
+      "metadata": {
+        "description": "The External IP of the devies going to be managed"
+        }
+      }
   },
   "variables": {
     "TemplateBase": "https://raw.githubusercontent.com/jonaserikson/azure/master/quick-redeploy-unifi-controller/",
@@ -70,6 +77,7 @@
     "addressPrefix": "10.10.0.0/8",
     "subnetName": "Subnet01",
     "subnetPrefix": "10.10.0.0/24",
+    "staticPrivateIP": "10.10.0.4",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
@@ -77,13 +85,13 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "PIPid": "[concat(parameters('ServerName'),variables('PIPdef'))]",
     "Nicid": "[concat(parameters('ServerName'),variables('NICdef'))]",
+    "NSGid": "[concat(parameters('ServerName'),parameters('NSGDef'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "SADef": "sa",
     "NICDef": "nic",
     "PIPDef": "pip",
     "NSGDef": "nsg",
-    "OSDISKDef": "osdisk",
-    "NSGDef": "nsg"
+    "OSDISKDef": "osdisk"
   },
   "resources": [
     {
@@ -93,6 +101,44 @@
       "location": "[variables('location')]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('NSGid')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "22",
+            "properties": {
+              "description": "Port 22",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "8443",
+            "properties": {
+              "description": "Port 8443",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8443",
+              "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }
+        ]
       }
     },
     {
@@ -112,6 +158,9 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[variables('location')]",
+      "dependsOn": [
+      "[concat('Microsoft.Network/networkSecurityGroups/',variables('NSGid'))]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -122,7 +171,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[variables('subnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('NSGid'))]"
+              }
             }
           }
         ]
@@ -142,7 +194,8 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAllocationMethod": "Static",
+              "PrivateIpAddress": "[variables('staticPrivateIP')]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('PIPid'))]"
               },
