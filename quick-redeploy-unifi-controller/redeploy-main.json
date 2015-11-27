@@ -118,7 +118,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "22",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
@@ -132,7 +132,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "8443",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[parameters('ExternalIPofDevices')]",
+              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
               "access": "Allow",
               "priority": 101,
               "direction": "Inbound"
