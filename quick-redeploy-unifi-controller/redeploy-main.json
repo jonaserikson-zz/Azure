@@ -50,9 +50,9 @@
   },
   "Application": {
     "type": "string",
-    "defaultValue": "echo",
+    "defaultValue": "Unifi_Controller",
     "allowedValues": [
-      "echo"
+      "Unifi_Controller"
     ],
     "metadata": {
       "description": "Installs selected application"
