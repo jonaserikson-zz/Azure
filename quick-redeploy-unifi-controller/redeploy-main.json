@@ -85,7 +85,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "PIPid": "[concat(parameters('ServerName'),variables('PIPdef'))]",
     "Nicid": "[concat(parameters('ServerName'),variables('NICdef'))]",
-    "NSGid": "[concat(parameters('ServerName'),parameters('NSGDef'))]",
+    "NSGid": "[concat(parameters('ServerName'),variables('NSGDef'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "SADef": "sa",
     "NICDef": "nic",
@@ -134,7 +134,7 @@
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
               "destinationAddressPrefix": "[parameters('ExternalIPofDevices')]",
               "access": "Allow",
-              "priority": 100,
+              "priority": 101,
               "direction": "Inbound"
             }
           }
