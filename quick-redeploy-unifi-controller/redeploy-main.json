@@ -132,7 +132,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "8443",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 101,
               "direction": "Inbound"
@@ -146,7 +146,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "8080",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 102,
               "direction": "Inbound"
@@ -160,7 +160,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "8088",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 103,
               "direction": "Inbound"
@@ -174,7 +174,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "8843",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 104,
               "direction": "Inbound"
@@ -188,7 +188,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "3478",
               "sourceAddressPrefix": "[parameters('ExternalIPofDevices')]",
-              "destinationAddressPrefix": "[variable('staticPrivateIP')]",
+              "destinationAddressPrefix": "[variables('staticPrivateIP')]",
               "access": "Allow",
               "priority": 105,
               "direction": "Inbound"
