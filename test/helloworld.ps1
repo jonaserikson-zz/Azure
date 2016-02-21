@@ -7,6 +7,6 @@ param (
     )
 
 $CredsPath = "c:\temp\"
-
+$SplitArgument = $Argument.Split(";")
 mkdir c:\temp
-Write-Output $Arguments.CredsContent | out-file $CredsPath$Arguments.CredsFilename
+Write-Output $SplitArguments[1] | out-file $CredsPath$SplitArguments[0]
