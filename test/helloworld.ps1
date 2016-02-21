@@ -10,7 +10,8 @@ param (
 $CredsPath = "c:\temp\"
 mkdir c:\temp
 $SplitCredStuff = $CredStuff -split ';',2
-Write-Output $SplitCredStuff[1] | out-file $CredsPath$($SplitCredStuff[0])
+#Write-Output $SplitCredStuff[1] | out-file $CredsPath$($SplitCredStuff[0])
+Write-Output "hello world" | out-file $CredsPath$($SplitCredStuff[0])
 
 
 
