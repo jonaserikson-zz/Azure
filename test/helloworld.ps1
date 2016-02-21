@@ -1,3 +1,11 @@
+
+param (
+
+		[Parameter(Mandatory=$true)]
+        [string]
+        $Argument
+    )
+
 mkdir c:\temp
 $GetArgument = $Argument
 #$SplitArgument = $Argument.Split(";")
