@@ -3,10 +3,10 @@ param (
 
 		[Parameter(Mandatory=$true)]
         [string]
-        $Arguments
+        $CredStuff
     )
 
 $CredsPath = "c:\temp\"
-$SplitArgument = $Argument.Split(";")
+$SplitCredStuff = $CredStuff.Split(";")
 mkdir c:\temp
-Write-Output $SplitArguments[1] | out-file $CredsPath$SplitArguments[0]
+Write-Output $SplitCredStuff[1] | out-file $CredsPath$SplitCredStuff[0]
