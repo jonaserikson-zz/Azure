@@ -3,14 +3,10 @@ param (
 
 		[Parameter(Mandatory=$true)]
         [string]
-        $CredsFilename,
-
-      [Parameter(Mandatory=$true)]
-          [string]
-          $CredsContent
+        $Arguments
     )
 
 $CredsPath = "c:\temp\"
 
 mkdir c:\temp
-Write-Output $CredsContent | out-file $CredsPath$CredsFilename
+Write-Output $Arguments.CredsContent | out-file $CredsPath$Arguments.CredsFilename
