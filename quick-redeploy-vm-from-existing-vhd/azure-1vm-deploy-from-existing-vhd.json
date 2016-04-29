@@ -27,7 +27,7 @@
       "type": "string"
     },
     "containerUri": {
-      "defaultValue": "https://xxxx.blob.core.windows.net/vhds/",
+      "defaultValue": "https://xxxx.blob.core.windows.net/vhds",
       "metadata": {
         "description": "Uri of the container where vhd is located"
       },
