@@ -1,0 +1,115 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "dnsNameForPublicIP": {
+      "type": "string"
+    },
+    "loadBalancerName": {
+      "type": "string"
+    },
+    "lbID": {
+      "type": "string"
+    },
+    "frontEndIPConfigID": {
+      "type": "string"
+    },
+    "publicIPID": {
+      "type": "string"
+    }
+  },
+  "variables": {
+      
+    },
+  "resources": [
+      {
+        "apiVersion": "2015-06-15",
+        "tags": {
+          "displayName": "AzureLoadBalancer"
+        },
+        "dependsOn": [
+        ],
+        "location": "[parameters('location')]",
+        "name": "[parameters('loadBalancerName')]",
+        "properties": {
+          "frontendIPConfigurations": [
+            {
+              "name": "[concat('loadBalancerFrontEnd', '1')]",
+              "properties": {
+                "publicIPAddress": {
+                  "id": "[concat(parameters('publicIPID'), '1')]"
+                }
+              }
+            }
+          ],
+          "backendAddressPools": [
+            {
+              "name": "loadBalancerBackEnd"
+            }
+          ],
+          "loadBalancingRules": [
+            {
+              "Name": "APP1-HTTPS",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
+                },
+                "backendAddressPool": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+                },
+                "probe": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/lbprobeHTTPS', '1')]"
+                },
+                "protocol": "Tcp",
+                "frontendPort": 443,
+                "backendPort": 6441,
+                "idleTimeoutInMinutes": 15
+              }
+            },
+            {
+              "Name": "APP1-HTTP",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd1')]"
+                },
+                "backendAddressPool": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+                },
+                "probe": {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName')), '/probes/lbprobeHTTP', '1')]"
+                },
+                "protocol": "Tcp",
+                "frontendPort": 80,
+                "backendPort": 8081,
+                "idleTimeoutInMinutes": 15
+              }
+            }
+          ],
+          "probes": [
+            {
+              "properties": {
+                "protocol": "Tcp",
+                "port": 6441,
+                "intervalInSeconds": 15,
+                "numberOfProbes": 2
+              },
+              "name": "[concat('lbprobeHTTPS', '1')]"
+            },
+            {
+              "properties": {
+                "protocol": "Tcp",
+                "port": 8081,
+                "intervalInSeconds": 15,
+                "numberOfProbes": 2
+              },
+              "name": "[concat('lbprobeHTTP', '1')]"
+            }
+          ]
+        },
+        "type": "Microsoft.Network/loadBalancers"
+      }
+    ]
+  }

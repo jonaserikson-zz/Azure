@@ -1,0 +1,363 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "West US",
+      "allowedValues": [
+        "Brazil South",
+        "Central US",
+        "East Aisa",
+        "East US",
+        "East US 2",
+        "Japan East",
+        "Japan West",
+        "North Central US",
+        "North Europe",
+        "South Central US",
+        "Southeast Aisa",
+        "West Europe",
+        "West US"
+      ],
+      "metadata": {
+        "description": "The data center you want to install into."
+      }
+    },
+    "numberOfBIGIPs": {
+      "type": "int",
+      "defaultValue": 2,
+      "maxValue": 2,
+      "metadata": {
+        "description": "The number of BIGIPs that will be deployed infront of your application, (1-2)."
+      }
+    },
+    "numberOfPublicIPs": {
+      "type": "int",
+      "defaultValue": 1,
+      "maxValue": 5,
+      "metadata": {
+        "description": "The number of publicly routable IPs needed for external application access, (1-5)."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_A1",
+      "metadata": {
+        "description": "The size of the Virtual Hardware Instance."
+      },
+      "allowedValues": [
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_D2",
+        "Standard_D5"
+      ]
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "User name to login to the BIGIP."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "defaultValue": "F5testnet",
+      "metadata": {
+        "description": "Password to login to the BIGIP."
+      }
+    },
+    "dnsNameForPublicIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP(s) used to access the BIGIP."
+      }
+    },
+    "vnetResourceGroupName": {
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Resource group that host the Vnet"
+      },
+      "type": "string"
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Existing Vnet to deploy to."
+      }
+    },
+    "subnetName": {
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Subnet for machine"
+      },
+      "type": "string"
+    },
+    "IPOfFirstF5Node": {
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Subnet for machine"
+      },
+      "type": "string"
+    }
+  },
+  "variables": {
+    "vnetID": "[resourceId(parameters('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnetId": "[concat(variables('vnetId'),'/subnets/', parameters('subnetName'))]",
+
+    "loadBalancerName": "[concat(parameters('dnsNameForPublicIP'),'-alb')]",
+    "nicNamePrefix": "[concat(parameters('dnsNameForPublicIP'),'-nic')]",
+    "availabilitySetName": "[concat(parameters('dnsNameForPublicIP'),'-avset')]",
+    "newStorageAccountName": "[concat(parameters('dnsNameForPublicIP'),'stor')]",
+    "bigipNamePrefix": "[concat(parameters('dnsNameForPublicIP'),'-bigip')]",
+    "templateBaseUrl": "https://raw.githubusercontent.com/gregcoward/f5demo/master/",
+    "templateFileBase": "bigip-ha-deploy-alb-",
+    "lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('loadBalancerName'))]",
+    "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
+    "publicIPID": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('dnsNameForPublicIP'))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('newStorageAccountName')]",
+      "tags": {
+        "displayName": "StorageAccount"
+      },
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[parameters('location')]",
+      "apiVersion": "2015-05-01-preview",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('dnsNameForPublicIP'), copyIndex(1))]",
+      "copy": {
+        "count": "[parameters('numberOfPublicIPs')]",
+        "name": "IPcopy"
+      },
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "PublicIPAddress"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(parameters('dnsNameForPublicIP'), copyIndex(1))]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('nicNamePrefix'),copyindex())]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "NetworkInterface"
+      },
+      "dependsOn": [
+        "Microsoft.Resources/deployments/nestedTemplate",
+        "[concat('Microsoft.Network/loadBalancers/', variables('loadBalancerName'),'/inboundNatRules/guimgt', copyIndex())]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('loadBalancerName'),'/inboundNatRules/sshmgt', copyIndex())]"
+      ],
+      "copy": {
+        "count": "[parameters('numberOfBIGIPs')]",
+        "name": "niccopy"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(parameters('IPOfFirstF5Node'),add(0,copyindex()))]",
+              "subnet": {
+                "id": "[variables('subnetId')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(variables('lbID'), '/backendAddressPools/', 'loadBalancerBackEnd')]"
+                }
+              ],
+
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(variables('lbID'), '/inboundNatRules/', 'sshmgt', copyIndex())]"
+                },
+                {
+                  "id": "[concat(variables('lbID'), '/inboundNatRules/', 'guimgt', copyIndex())]"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "nestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'), variables('templateFileBase'), parameters('numberofPublicIPs'), '.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "dnsNameForPublicIP": {
+            "value": "[parameters('dnsNameForPublicIP')]"
+          },
+          "loadBalancerName": {
+            "value": "[variables('loadBalancerName')]"
+          },
+          "lbID": {
+            "value": "[variables('lbID')]"
+          },
+          "frontEndIPConfigID": {
+            "value": "[variables('frontEndIPconfigID')]"
+          },
+          "publicIPID": {
+            "value": "[variables('publicIPID')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "tags": {
+        "displayName": "InboundNATRulesGUI"
+      },
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('loadBalancerName'),'/guimgt', copyIndex())]",
+      "location": "[parameters('location')]",
+      "copy": {
+        "name": "lbNatLoop",
+        "count": "[parameters('numberOfBIGIPs')]"
+      },
+      "dependsOn": [
+        "Microsoft.Resources/deployments/nestedTemplate"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[concat(variables('frontEndIPConfigID'), '1')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": "[copyIndex(8443)]",
+        "backendPort": 443,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "tags": {
+        "displayName": "InboundNATRulesSSH"
+      },
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('loadBalancerName'),'/sshmgt', copyIndex())]",
+      "location": "[parameters('location')]",
+      "copy": {
+        "name": "lbNatLoop",
+        "count": "[parameters('numberOfBIGIPs')]"
+      },
+      "dependsOn": [
+        "Microsoft.Resources/deployments/nestedTemplate"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[concat(variables('frontEndIPConfigID'), '1')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": "[copyIndex(8022)]",
+        "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "tags": {
+        "displayName": "AvailabilitySet"
+      },
+      "location": "[parameters('location')]",
+      "name": "[variables('availabilitySetName')]",
+      "type": "Microsoft.Compute/availabilitySets"
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(variables('bigipNamePrefix'),copyindex())]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "BIG-IPs"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicNamePrefix'), copyindex())]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
+      ],
+      "copy": {
+        "count": "[parameters('numberOfBIGIPs')]",
+        "name": "wafcopy"
+      },
+      "plan": {
+        "name": "f5-bigip-virtual-edition-best-byol",
+        "publisher": "f5-networks",
+        "product": "f5-big-ip"
+      },
+      "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('availabilitySetName'))]"
+        },
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[concat(variables('bigipNamePrefix'),copyindex())]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "f5-networks",
+            "offer": "f5-big-ip",
+            "sku": "f5-bigip-virtual-edition-best-byol",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[concat('osdisk',copyindex())]",
+            "vhd": {
+              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('newStorageAccountName'),'/osDisk',copyindex(),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[concat(resourceId('Microsoft.Network/networkInterfaces',variables('nicNamePrefix')),copyindex())]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://',variables('newstorageAccountName'),'.blob.core.windows.net')]"
+          }
+        }
+      }
+    }
+  ],
+    "outputs": {
+        "Documentation": {
+          "type": "string",
+          "value": "To configure these BIG-IP devices into a Device Service Cluster, please see the following documentation.  https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-device-service-clustering-admin-12-0-0.html?sr=50978566"
+        }
+      }
+    }
