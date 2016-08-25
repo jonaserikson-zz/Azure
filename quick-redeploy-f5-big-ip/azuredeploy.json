@@ -112,8 +112,8 @@
     "availabilitySetName": "[concat(parameters('dnsNameForPublicIP'),'-avset')]",
     "newStorageAccountName": "[concat(parameters('dnsNameForPublicIP'),'stor')]",
     "bigipNamePrefix": "[concat(parameters('dnsNameForPublicIP'),'-bigip')]",
-    "templateBaseUrl": "https://github.com/jonaserikson/Azure/tree/master/",
-    "templateFileBase": "quick-redeploy-f5-big-ip",
+    "templateBaseUrl": "https://raw.githubusercontent.com/jonaserikson/Azure/master/quick-redeploy-f5-big-ip/",
+    "templateFileBase": "bigip-ha-deploy-alb-",
     "lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('loadBalancerName'))]",
     "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
     "publicIPID": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('dnsNameForPublicIP'))]"
