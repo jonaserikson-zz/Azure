@@ -4,7 +4,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "West US",
+      "defaultValue": "North Europe",
       "allowedValues": [
         "Brazil South",
         "Central US",
