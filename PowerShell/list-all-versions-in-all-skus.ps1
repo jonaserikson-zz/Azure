@@ -11,7 +11,7 @@ $Alloffers = @(Get-AzureRmVMImageOffer -Location $location -Publisher $publisher
 #Get all images for all skus of all ofers for the selected publisher
 foreach ($Offer in $Alloffers) {
 $Allskus = (Get-AzureRmVMImageSku -Location $location -Publisher $publisher -Offer $offer | Select  -ExpandProperty Skus)
- foreach ($sku in $Allskus) {s
+ foreach ($sku in $Allskus) {
 $Allimages += @(Get-AzureRmVMImage -Location $location -PublisherName $publisher -Offer $offer -Skus $sku)
  }
  }
