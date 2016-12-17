@@ -1,2 +1,0 @@
-
-Get-AzureRmADApplication | select DisplayName,ObjectId, @{Name=’IdentifierUris’;Expression={[string]::join(“;”, ($_.IdentifierUris))}},HomePage,Type,ApplicationId,AvailableToOtherTenants,AppPermissions,@{Name=’ReplyUrls’;Expression={[string]::join(“;”, ($_.ReplyUrls))}} | export-csv C:\temp\baaaaad.csv -NoTypeInformation
