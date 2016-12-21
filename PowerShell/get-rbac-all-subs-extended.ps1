@@ -11,7 +11,7 @@ foreach ($RoleAss in $AllRoleASs) {
      $prop = [ordered]@{
          'SubscriptionName' = $SubName
          'SubscriptionID' = $SubID
-         'DisplaynName' = $roleAss.DisplayName
+         'DisplayName' = $roleAss.DisplayName
          'SignInName' = $roleAss.SignInName
          'RoleDefinitionName' = $roleAss.RoleDefinitionName
          'ObjectType' = $roleAss.ObjectType
@@ -23,4 +23,4 @@ foreach ($RoleAss in $AllRoleASs) {
  }
   }
   $objectArr
-#$objectArr |Export-Csv c:\temp\AllRBAC.csv -NoTypeInformation
+#$objectArr | Export-Csv c:\temp\AllRBAC.csv -NoTypeInformation

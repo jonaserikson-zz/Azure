@@ -67,7 +67,7 @@
       }
   },
   "variables": {
-    "TemplateBase": "https://github.com/jonaserikson/Azure/tree/master/JSON/quick-redeploy-unifi-controller",
+    "TemplateBase": "https://github.com/jonaserikson/Azure/tree/master/JSON/quick-redeploy-unifi-controller/",
     "ScriptFile": "[parameters('Application')]",
     "ScriptType": ".sh",
     "apiVersion": "2015-05-01-preview",
