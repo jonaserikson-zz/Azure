@@ -6,3 +6,12 @@
 
 
 $sku = Get-AzureADSubscribedSku | Select-Object SkuPartNumber, {$_.prepaidunits.enabled}, consumedunits
+
+
+
+
+
+
+Get-AzureRmResource -ResourceGroupName rgAzureOpsPrd -ResourceType Microsoft.Compute/virtualMachines -ResourceName 'iemnt120'  | ConvertTo-Json
+Save-AzureRmResourceGroupDeploymentTemplate -ResourceGroupName ExampleGroup -DeploymentName NewStorage
+Export-AzureRmResourceGroup -ResourceGroupName ExampleGroup
